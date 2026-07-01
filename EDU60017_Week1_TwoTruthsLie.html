@@ -8,23 +8,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Shantell+Sans:wght@400;500;600;700&display=swap');
 
 :root{
-  --ink:#402019;
-  --mustard:#cabe51;
-  --sage:#a3c464;
-  --bluegrey:#829cbd;
-  --grey:#808080;
-  --green:#7ec27c;
-  --teal:#7eb7ad;
-  --cream:#faf7ef;
+ --ink:#402019;
+ --mustard:#cabe51;
+ --sage:#a3c464;
+ --bluegrey:#829cbd;
+ --grey:#808080;
+ --green:#7ec27c;
+ --teal:#7eb7ad;
+ --cream:#faf7ef;
 }
 
 *{box-sizing:border-box;}
 body{
-  margin:0;
-  font-family:'Shantell Sans', sans-serif;
-  background:var(--cream);
-  color:var(--ink);
-  padding:24px 16px 60px;
+ margin:0;
+ font-family:'Shantell Sans', sans-serif;
+ background:var(--cream);
+ color:var(--ink);
+ padding:24px 16px 60px;
 }
 .wrap{max-width:680px;margin:0 auto;}
 
@@ -35,34 +35,34 @@ h1{font-size:22px;font-weight:700;margin:0 0 4px;}
 .screen.active{display:block;}
 
 .panel{
-  background:#fff;
-  border:2px solid var(--ink);
-  border-radius:16px;
-  padding:24px;
+ background:#fff;
+ border:2px solid var(--ink);
+ border-radius:16px;
+ padding:24px;
 }
 
 label{display:block;font-size:14px;font-weight:600;margin-bottom:8px;}
 input[type=text]{
-  width:100%;
-  font-family:'Shantell Sans', sans-serif;
-  font-size:16px;
-  padding:12px 14px;
-  border:2px solid var(--ink);
-  border-radius:10px;
-  margin-bottom:6px;
+ width:100%;
+ font-family:'Shantell Sans', sans-serif;
+ font-size:16px;
+ padding:12px 14px;
+ border:2px solid var(--ink);
+ border-radius:10px;
+ margin-bottom:6px;
 }
 .error{color:#993c1d;font-size:13px;min-height:18px;margin-bottom:10px;}
 
 .btn{
-  font-family:'Shantell Sans', sans-serif;
-  font-weight:700;
-  font-size:15px;
-  border:2px solid var(--ink);
-  background:var(--mustard);
-  color:var(--ink);
-  border-radius:999px;
-  padding:12px 26px;
-  cursor:pointer;
+ font-family:'Shantell Sans', sans-serif;
+ font-weight:700;
+ font-size:15px;
+ border:2px solid var(--ink);
+ background:var(--mustard);
+ color:var(--ink);
+ border-radius:999px;
+ padding:12px 26px;
+ cursor:pointer;
 }
 .btn:hover{background:var(--sage);}
 .btn.secondary{background:#fff;}
@@ -72,41 +72,41 @@ input[type=text]{
 .top-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
 .round-label{font-weight:700;font-size:16px;}
 .score-pill{
-  background:var(--teal);
-  color:#04342C;
-  font-weight:700;
-  border-radius:999px;
-  padding:6px 16px;
-  font-size:14px;
-  white-space:nowrap;
+ background:var(--teal);
+ color:#04342C;
+ font-weight:700;
+ border-radius:999px;
+ padding:6px 16px;
+ font-size:14px;
+ white-space:nowrap;
 }
 .progress-track{
-  height:8px;
-  background:#eee;
-  border-radius:999px;
-  overflow:hidden;
-  margin-bottom:18px;
+ height:8px;
+ background:#eee;
+ border-radius:999px;
+ overflow:hidden;
+ margin-bottom:18px;
 }
 .progress-fill{
-  height:100%;
-  background:var(--bluegrey);
-  border-radius:999px;
-  transition:width .25s ease;
+ height:100%;
+ background:var(--bluegrey);
+ border-radius:999px;
+ transition:width .25s ease;
 }
 
 .topic{font-size:13px;text-transform:uppercase;letter-spacing:.03em;color:var(--grey);font-weight:700;margin-bottom:2px;}
 .instruction{font-size:14px;margin:0 0 16px;}
 
 .card{
-  border:2px solid var(--ink);
-  border-radius:12px;
-  padding:14px 18px;
-  margin-bottom:12px;
-  cursor:pointer;
-  background:#fff;
-  font-size:15px;
-  line-height:1.5;
-  transition:transform .12s ease;
+ border:2px solid var(--ink);
+ border-radius:12px;
+ padding:14px 18px;
+ margin-bottom:12px;
+ cursor:pointer;
+ background:#fff;
+ font-size:15px;
+ line-height:1.5;
+ transition:transform .12s ease;
 }
 .card:hover{transform:translateY(-2px);}
 .card.correct{background:#eaf3de;border-color:var(--green);}
@@ -115,14 +115,14 @@ input[type=text]{
 .card.disabled{cursor:default;}
 
 .feedback{
-  display:none;
-  margin-top:6px;
-  padding:16px 18px;
-  border-radius:12px;
-  background:#f1efe8;
-  border:2px solid var(--ink);
-  font-size:14px;
-  line-height:1.6;
+ display:none;
+ margin-top:6px;
+ padding:16px 18px;
+ border-radius:12px;
+ background:#f1efe8;
+ border:2px solid var(--ink);
+ font-size:14px;
+ line-height:1.6;
 }
 .feedback.show{display:block;}
 .feedback strong{display:block;margin-bottom:6px;}
@@ -131,10 +131,10 @@ input[type=text]{
 .actions.show{display:block;}
 
 .final-score{
-  font-size:40px;
-  font-weight:700;
-  text-align:center;
-  margin:10px 0 4px;
+ font-size:40px;
+ font-weight:700;
+ text-align:center;
+ margin:10px 0 4px;
 }
 .final-label{text-align:center;font-size:14px;color:var(--grey);margin-bottom:20px;}
 .final-msg{font-size:15px;text-align:center;margin-bottom:24px;line-height:1.6;}
@@ -144,161 +144,161 @@ input[type=text]{
 <body>
 <div class="wrap">
 
-  <div id="screen-name" class="screen active">
-    <h1>Two truths and a lie</h1>
-    <p class="subtitle">EDU60017: Understanding Theories of Teaching, Learning and Development &mdash; Week 1</p>
-    <div class="panel">
-      <p style="margin-top:0;font-size:14px;">Ten rounds. Each round gives you three statements about this week's content &mdash; two true, one false. Pick the lie, and I'll explain why.</p>
-      <label for="nameInput">Your first name</label>
-      <input type="text" id="nameInput" placeholder="e.g. Priya" autocomplete="given-name">
-      <div class="error" id="nameError"></div>
-      <button class="btn full" id="startBtn">Start &rarr;</button>
-    </div>
-  </div>
+ <div id="screen-name" class="screen active">
+ <h1>Two truths and a lie</h1>
+ <p class="subtitle">EDU60017: Understanding Theories of Teaching, Learning and Development &mdash; Week 1</p>
+ <div class="panel">
+ <p style="margin-top:0;font-size:14px;">Ten rounds. Each round gives you three statements about this week's content &mdash; two true, one false. Pick the lie, and I'll explain why.</p>
+ <label for="nameInput">Your first name</label>
+ <input type="text" id="nameInput" placeholder="e.g. Priya" autocomplete="given-name">
+ <div class="error" id="nameError"></div>
+ <button class="btn full" id="startBtn">Start &rarr;</button>
+ </div>
+ </div>
 
-  <div id="screen-game" class="screen">
-    <div class="top-row">
-      <div class="round-label" id="roundLabel">Round 1 of 10</div>
-      <div class="score-pill" id="scorePill">Score: 0/0</div>
-    </div>
-    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:10%;"></div></div>
-    <div class="panel">
-      <div class="topic" id="topicLabel"></div>
-      <p class="instruction">One of these statements is false. Tap the one you think is the lie.</p>
-      <div id="cards"></div>
-      <div class="feedback" id="feedback"></div>
-      <div class="actions" id="actions">
-        <button class="btn full" id="nextBtn">Next round &rarr;</button>
-      </div>
-    </div>
-  </div>
+ <div id="screen-game" class="screen">
+ <div class="top-row">
+ <div class="round-label" id="roundLabel">Round 1 of 10</div>
+ <div class="score-pill" id="scorePill">Score: 0/0</div>
+ </div>
+ <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:10%;"></div></div>
+ <div class="panel">
+ <div class="topic" id="topicLabel"></div>
+ <p class="instruction">One of these statements is false. Tap the one you think is the lie.</p>
+ <div id="cards"></div>
+ <div class="feedback" id="feedback"></div>
+ <div class="actions" id="actions">
+ <button class="btn full" id="nextBtn">Next round &rarr;</button>
+ </div>
+ </div>
+ </div>
 
-  <div id="screen-final" class="screen">
-    <h1>Round complete</h1>
-    <p class="subtitle">EDU60017 Week 1</p>
-    <div class="panel">
-      <div class="final-score" id="finalScore">0/10</div>
-      <div class="final-label">statements identified correctly</div>
-      <div class="final-msg" id="finalMsg"></div>
-      <button class="btn full" id="replayBtn">Play again</button>
-      <div class="saving" id="savingMsg"></div>
-    </div>
-  </div>
+ <div id="screen-final" class="screen">
+ <h1>Round complete</h1>
+ <p class="subtitle">EDU60017 Week 1</p>
+ <div class="panel">
+ <div class="final-score" id="finalScore">0/10</div>
+ <div class="final-label">statements identified correctly</div>
+ <div class="final-msg" id="finalMsg"></div>
+ <button class="btn full" id="replayBtn">Play again</button>
+ <div class="saving" id="savingMsg"></div>
+ </div>
+ </div>
 
 </div>
 
 <script>
 var ROUNDS = [
-  {
-    topic: "Biological primary vs secondary knowledge",
-    statements: [
-      { text: "Biologically primary knowledge, such as spoken language and social interaction, is acquired naturally through everyday experience, while biologically secondary knowledge, such as reading and mathematics, needs formal instruction.", lie: false,
-        note: "True. This is Geary's distinction (2007, 2008) at the heart of this section." },
-      { text: "Because the brain has not evolved to acquire secondary knowledge with ease, subjects like maths and science impose a higher cognitive load, so teachers need to provide structured guidance and support.", lie: false,
-        note: "True. This is exactly why explicit teaching matters more for secondary knowledge (Sweller, 2016)." },
-      { text: "Grammar is a clear example of biologically primary knowledge, since children naturally pick up every grammar rule, simple or complex, just through everyday exposure, with no need for explicit teaching.", lie: true,
-        note: "This is the lie. Grammar is actually a borderline case. Children do pick up basic grammar naturally, but more complex structures usually require explicit teaching, which is part of what makes it a mix rather than pure primary knowledge." }
-    ]
-  },
-  {
-    topic: "Cognitive load theory",
-    statements: [
-      { text: "Cognitive load theory, developed by John Sweller, identifies three types of load on working memory: intrinsic, extraneous, and germane.", lie: false,
-        note: "True (Sweller, 2011). All three interact to determine whether a student can process new material." },
-      { text: "When intrinsic and extraneous load are too high, there's little room left for germane processing, making it harder for students to retain or understand new material.", lie: false,
-        note: "True. This is why managing the other two loads matters so much for genuine learning to happen." },
-      { text: "Extraneous load refers to the natural complexity of the content itself, such as introducing a brand-new concept, and can never be reduced by a teacher's instructional choices.", lie: true,
-        note: "This is the lie, and it swaps two types of load. The natural complexity of content is intrinsic load. Extraneous load comes from unnecessary demands like poor formatting or confusing instructions, and it's exactly what good teaching design can reduce." }
-    ]
-  },
-  {
-    topic: "Explicit instruction",
-    statements: [
-      { text: "Explicit instruction involves clearly explaining and modelling concepts and procedures, rather than expecting students to discover them independently.", lie: false,
-        note: "True (Kirschner, Sweller & Clark, 2006). Teachers make each step of the process visible." },
-      { text: "Research shows explicit instruction is particularly effective for novices learning unfamiliar material, because it reduces ambiguity and frees up working memory to focus on understanding.", lie: false,
-        note: "True. Less guesswork about 'what to do' leaves more working memory for actually learning the content." },
-      { text: "Explicit instruction is really only useful for younger primary students, and once students reach more complex secondary-level content, discovery-based learning becomes the stronger evidence-based approach.", lie: true,
-        note: "This is the lie. The research doesn't limit explicit instruction to young learners; it applies whenever someone is a novice with unfamiliar material, at any age or year level." }
-    ]
-  },
-  {
-    topic: "Scaffolding",
-    statements: [
-      { text: "Scaffolding involves breaking down complex tasks into smaller, manageable steps, with supports gradually removed as students grow more competent.", lie: false,
-        note: "True. Like training wheels on a bike, the supports are temporary by design." },
-      { text: "Tools like graphic organisers, sentence starters, and guided questions help reduce cognitive load by providing structure during learning (van de Pol et al., 2010).", lie: false,
-        note: "True. These tools free up working memory so students can focus on the content rather than the process." },
-      { text: "Scaffolding should stay in place for as long as possible throughout a student's schooling, because removing supports too early or too often is the single biggest risk to learning.", lie: true,
-        note: "This is the lie. The material actually warns about both directions: too much scaffolding for too long can create dependency, while removing it too soon can cause students to struggle and lose motivation. It's a balance, not 'keep it as long as possible'." }
-    ]
-  },
-  {
-    topic: "Structured content",
-    statements: [
-      { text: "Well-structured lessons support memory by sequencing ideas from simple to complex, and by chunking related information into meaningful groups, like grouping animals by habitat.", lie: false,
-        note: "True. Sequencing and chunking both align with how working memory naturally processes information." },
-      { text: "Using signals such as bold headings and visual cues, and eliminating irrelevant content, helps students' working memory follow a clear, logical flow of information.", lie: false,
-        note: "True. These are direct ways teachers reduce extraneous load through structure." },
-      { text: "Because our brains are just as capable of making sense of disorganised information as organised information, structuring content is mainly a matter of style rather than something that actually reduces cognitive load.", lie: true,
-        note: "This is the lie. The material states the opposite: our brains are naturally wired to make sense of organised information, which is why structure genuinely reduces cognitive load rather than just looking tidier." }
-    ]
-  },
-  {
-    topic: "Connecting to prior knowledge",
-    statements: [
-      { text: "When students can relate new concepts to what they already understand, they are more likely to retain and apply that new learning (van Merri\u00ebnboer & Sweller, 2005).", lie: false,
-        note: "True. New learning sticks better when it has something familiar to attach to." },
-      { text: "Activating prior knowledge before introducing new content, such as through class discussions or analogies, prepares the brain to receive and organise new information.", lie: false,
-        note: "True. This is why teachers often start a lesson by asking what students already know." },
-      { text: "Metaphors, stories, and real-life examples are best avoided when linking new learning to prior knowledge, because they tend to increase cognitive load rather than reduce it.", lie: true,
-        note: "This is the lie. The material says the opposite: metaphors, stories, and real-life examples make unfamiliar ideas more accessible and reduce the mental effort required to process them." }
-    ]
-  },
-  {
-    topic: "Working memory limits",
-    statements: [
-      { text: "Working memory is limited in both how much it can hold and how long it lasts, with most people managing only about four to seven items at a time (Cowan, 2010).", lie: false,
-        note: "True. This limited capacity is exactly why cognitive overload can happen so easily in a busy classroom." },
-      { text: "Unless information is actively rehearsed or repeated, it usually fades from working memory within about 10 to 15 seconds.", lie: false,
-        note: "True. This is one reason why repetition and checking for understanding matter so much." },
-      { text: "Working memory has essentially the same storage capacity as long-term memory; the real difference between the two is only in how information is organised, not in how much can be held or for how long.", lie: true,
-        note: "This is the lie. Working memory is explicitly limited in both capacity and duration, unlike long-term memory, which can store information for days, months, or years." }
-    ]
-  },
-  {
-    topic: "Memory retrieval and reconstruction",
-    statements: [
-      { text: "When students encounter problems, their brains use pattern recognition to identify similarities with previously learned material, and teachers can strengthen this by highlighting patterns across contexts (Schacter, 2012).", lie: false,
-        note: "True. Explicitly pointing out patterns helps students build these associative networks." },
-      { text: "Effective teaching recognises that memories are not simply retrieved but actively reconstructed, allowing students to adapt prior knowledge to new situations.", lie: false,
-        note: "True. This is why encouraging students to explain how earlier learning applies to a new context is so valuable." },
-      { text: "Once a memory is formed and stored, it is retrieved in exactly the same fixed form every time, which is why asking students to explain how previous learning applies to new contexts makes little real difference to their understanding.", lie: true,
-        note: "This is the lie. The material describes memory as actively reconstructed each time, not fixed, and explicitly recommends encouraging students to explain connections as a way to reinforce flexible use of knowledge." }
-    ]
-  },
-  {
-    topic: "Expertise reversal and gradual release",
-    statements: [
-      { text: "The expertise reversal effect describes how instructional supports that help beginners, such as detailed step-by-step guidance, can start to get in the way once students become more experienced (Kalyuga et al., 2003).", lie: false,
-        note: "True. What helps a novice can start to feel repetitive or frustrating once someone has built a solid schema." },
-      { text: "The gradual release of responsibility means a teacher is highly involved early on, demonstrating and guiding, then slowly reduces support as students grow in understanding (Fisher & Frey, 2014).", lie: false,
-        note: "True. Support is reduced gradually, not all at once." },
-      { text: "The clearest sign that a student is ready for reduced scaffolding is their age, so once students reach a certain year level, teachers should withdraw support regardless of how they are actually performing.", lie: true,
-        note: "This is the lie. The material is explicit that readiness isn't about age alone, but a combination of the learner's confidence, understanding, and task complexity, shown through things like completing tasks with minimal support." }
-    ]
-  },
-  {
-    topic: "Neuromyths",
-    statements: [
-      { text: "Neuromyths are misconceptions about brain functioning that remain widely believed in education despite not being supported by scientific evidence.", lie: false,
-        note: "True. This is the core definition used throughout this section." },
-      { text: "Research has repeatedly shown that matching instruction to a student's preferred learning style does not lead to better learning outcomes (Dekker et al., 2012).", lie: false,
-        note: "True. This is one of the most well-studied and clearly debunked neuromyths." },
-      { text: "Believing in neuromyths like learning styles is essentially harmless, since even if the underlying science is wrong, tailoring lessons to a student's 'preferred style' carries no real cost to schools or students.", lie: true,
-        note: "This is the lie. The material explains real costs: schools can divert funding and teacher time away from evidence-based strategies, and students can be labelled in ways that limit how they're taught." }
-    ]
-  }
+ {
+ topic: "Biological primary vs secondary knowledge",
+ statements: [
+ { text: "Biologically primary knowledge, such as spoken language and social interaction, is acquired naturally through everyday experience, while biologically secondary knowledge, such as reading and mathematics, needs formal instruction.", lie: false,
+ note: "True. This distinction sits at the heart of this section." },
+ { text: "Because the brain has not evolved to acquire secondary knowledge with ease, subjects like maths and science impose a higher cognitive load, so teachers need to provide structured guidance and support.", lie: false,
+ note: "True. This is exactly why explicit teaching matters more for secondary knowledge." },
+ { text: "Grammar is a clear example of biologically primary knowledge, since children naturally pick up every grammar rule, simple or complex, just through everyday exposure, with no need for explicit teaching.", lie: true,
+ note: "This is the lie. Grammar is actually a borderline case. Children do pick up basic grammar naturally, but more complex structures usually require explicit teaching, which is part of what makes it a mix rather than pure primary knowledge." }
+ ]
+ },
+ {
+ topic: "Cognitive load theory",
+ statements: [
+ { text: "Cognitive load theory, developed by John Sweller, identifies three types of load on working memory: intrinsic, extraneous, and germane.", lie: false,
+ note: "True. All three interact to determine whether a student can process new material." },
+ { text: "When intrinsic and extraneous load are too high, there's little room left for germane processing, making it harder for students to retain or understand new material.", lie: false,
+ note: "True. This is why managing the other two loads matters so much for genuine learning to happen." },
+ { text: "Extraneous load refers to the natural complexity of the content itself, such as introducing a brand-new concept, and can never be reduced by a teacher's instructional choices.", lie: true,
+ note: "This is the lie, and it swaps two types of load. The natural complexity of content is intrinsic load. Extraneous load comes from unnecessary demands like poor formatting or confusing instructions, and it's exactly what good teaching design can reduce." }
+ ]
+ },
+ {
+ topic: "Explicit instruction",
+ statements: [
+ { text: "Explicit instruction involves clearly explaining and modelling concepts and procedures, rather than expecting students to discover them independently.", lie: false,
+ note: "True. Teachers make each step of the process visible." },
+ { text: "Research shows explicit instruction is particularly effective for novices learning unfamiliar material, because it reduces ambiguity and frees up working memory to focus on understanding.", lie: false,
+ note: "True. Less guesswork about 'what to do' leaves more working memory for actually learning the content." },
+ { text: "Explicit instruction is really only useful for younger primary students, and once students reach more complex secondary-level content, discovery-based learning becomes the stronger evidence-based approach.", lie: true,
+ note: "This is the lie. The research doesn't limit explicit instruction to young learners; it applies whenever someone is a novice with unfamiliar material, at any age or year level." }
+ ]
+ },
+ {
+ topic: "Scaffolding",
+ statements: [
+ { text: "Scaffolding involves breaking down complex tasks into smaller, manageable steps, with supports gradually removed as students grow more competent.", lie: false,
+ note: "True. Like training wheels on a bike, the supports are temporary by design." },
+ { text: "Tools like graphic organisers, sentence starters, and guided questions help reduce cognitive load by providing structure during learning.", lie: false,
+ note: "True. These tools free up working memory so students can focus on the content rather than the process." },
+ { text: "Scaffolding should stay in place for as long as possible throughout a student's schooling, because removing supports too early or too often is the single biggest risk to learning.", lie: true,
+ note: "This is the lie. The material actually warns about both directions: too much scaffolding for too long can create dependency, while removing it too soon can cause students to struggle and lose motivation. It's a balance, not 'keep it as long as possible'." }
+ ]
+ },
+ {
+ topic: "Structured content",
+ statements: [
+ { text: "Well-structured lessons support memory by sequencing ideas from simple to complex, and by chunking related information into meaningful groups, like grouping animals by habitat.", lie: false,
+ note: "True. Sequencing and chunking both align with how working memory naturally processes information." },
+ { text: "Using signals such as bold headings and visual cues, and eliminating irrelevant content, helps students' working memory follow a clear, logical flow of information.", lie: false,
+ note: "True. These are direct ways teachers reduce extraneous load through structure." },
+ { text: "Because our brains are just as capable of making sense of disorganised information as organised information, structuring content is mainly a matter of style rather than something that actually reduces cognitive load.", lie: true,
+ note: "This is the lie. The material states the opposite: our brains are naturally wired to make sense of organised information, which is why structure genuinely reduces cognitive load rather than just looking tidier." }
+ ]
+ },
+ {
+ topic: "Connecting to prior knowledge",
+ statements: [
+ { text: "When students can relate new concepts to what they already understand, they are more likely to retain and apply that new learning.", lie: false,
+ note: "True. New learning sticks better when it has something familiar to attach to." },
+ { text: "Activating prior knowledge before introducing new content, such as through class discussions or analogies, prepares the brain to receive and organise new information.", lie: false,
+ note: "True. This is why teachers often start a lesson by asking what students already know." },
+ { text: "Metaphors, stories, and real-life examples are best avoided when linking new learning to prior knowledge, because they tend to increase cognitive load rather than reduce it.", lie: true,
+ note: "This is the lie. The material says the opposite: metaphors, stories, and real-life examples make unfamiliar ideas more accessible and reduce the mental effort required to process them." }
+ ]
+ },
+ {
+ topic: "Working memory limits",
+ statements: [
+ { text: "Working memory is limited in both how much it can hold and how long it lasts, with most people managing only about four to seven items at a time.", lie: false,
+ note: "True. This limited capacity is exactly why cognitive overload can happen so easily in a busy classroom." },
+ { text: "Unless information is actively rehearsed or repeated, it usually fades from working memory within about 10 to 15 seconds.", lie: false,
+ note: "True. This is one reason why repetition and checking for understanding matter so much." },
+ { text: "Working memory has essentially the same storage capacity as long-term memory; the real difference between the two is only in how information is organised, not in how much can be held or for how long.", lie: true,
+ note: "This is the lie. Working memory is explicitly limited in both capacity and duration, unlike long-term memory, which can store information for days, months, or years." }
+ ]
+ },
+ {
+ topic: "Memory retrieval and reconstruction",
+ statements: [
+ { text: "When students encounter problems, their brains use pattern recognition to identify similarities with previously learned material, and teachers can strengthen this by highlighting patterns across contexts.", lie: false,
+ note: "True. Explicitly pointing out patterns helps students build these associative networks." },
+ { text: "Effective teaching recognises that memories are not simply retrieved but actively reconstructed, allowing students to adapt prior knowledge to new situations.", lie: false,
+ note: "True. This is why encouraging students to explain how earlier learning applies to a new context is so valuable." },
+ { text: "Once a memory is formed and stored, it is retrieved in exactly the same fixed form every time, which is why asking students to explain how previous learning applies to new contexts makes little real difference to their understanding.", lie: true,
+ note: "This is the lie. The material describes memory as actively reconstructed each time, not fixed, and explicitly recommends encouraging students to explain connections as a way to reinforce flexible use of knowledge." }
+ ]
+ },
+ {
+ topic: "Expertise reversal and gradual release",
+ statements: [
+ { text: "The expertise reversal effect describes how instructional supports that help beginners, such as detailed step-by-step guidance, can start to get in the way once students become more experienced.", lie: false,
+ note: "True. What helps a novice can start to feel repetitive or frustrating once someone has built a solid schema." },
+ { text: "The gradual release of responsibility means a teacher is highly involved early on, demonstrating and guiding, then slowly reduces support as students grow in understanding.", lie: false,
+ note: "True. Support is reduced gradually, not all at once." },
+ { text: "The clearest sign that a student is ready for reduced scaffolding is their age, so once students reach a certain year level, teachers should withdraw support regardless of how they are actually performing.", lie: true,
+ note: "This is the lie. The material is explicit that readiness isn't about age alone, but a combination of the learner's confidence, understanding, and task complexity, shown through things like completing tasks with minimal support." }
+ ]
+ },
+ {
+ topic: "Neuromyths",
+ statements: [
+ { text: "Neuromyths are misconceptions about brain functioning that remain widely believed in education despite not being supported by scientific evidence.", lie: false,
+ note: "True. This is the core definition used throughout this section." },
+ { text: "Research has repeatedly shown that matching instruction to a student's preferred learning style does not lead to better learning outcomes.", lie: false,
+ note: "True. This is one of the most well-studied and clearly debunked neuromyths." },
+ { text: "Believing in neuromyths like learning styles is essentially harmless, since even if the underlying science is wrong, tailoring lessons to a student's 'preferred style' carries no real cost to schools or students.", lie: true,
+ note: "This is the lie. The material explains real costs: schools can divert funding and teacher time away from evidence-based strategies, and students can be labelled in ways that limit how they're taught." }
+ ]
+ }
 ];
 
 var TOTAL = ROUNDS.length;
@@ -327,27 +327,38 @@ var replayBtn = document.getElementById('replayBtn');
 var savingMsg = document.getElementById('savingMsg');
 
 function showScreen(el){
-  [screenName, screenGame, screenFinal].forEach(function(s){ s.classList.remove('active'); });
-  el.classList.add('active');
+ [screenName, screenGame, screenFinal].forEach(function(s){ s.classList.remove('active'); });
+ el.classList.add('active');
 }
 
 startBtn.addEventListener('click', function(){
-  var val = nameInput.value.trim();
-  if(!val){
-    nameError.textContent = "Please enter your first name to begin.";
-    return;
-  }
-  nameError.textContent = "";
-  playerName = val;
-  currentRound = 0;
-  score = 0;
-  showScreen(screenGame);
-  renderRound();
+ var val = nameInput.value.trim();
+ if(!val){
+ nameError.textContent = "Please enter your first name to begin.";
+ return;
+ }
+ nameError.textContent = "";
+ playerName = val;
+ currentRound = 0;
+ score = 0;
+ showScreen(screenGame);
+ renderRound();
 });
 
 nameInput.addEventListener('keydown', function(e){
-  if(e.key === 'Enter') startBtn.click();
+ if(e.key === 'Enter') startBtn.click();
 });
+
+function shuffle(arr){
+  var a = arr.slice();
+  for(var i = a.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+var currentOrder = [];
 
 function renderRound(){
   answeredThisRound = false;
@@ -360,34 +371,37 @@ function renderRound(){
   feedback.innerHTML = "";
   actions.classList.remove('show');
 
+  currentOrder = shuffle(round.statements.map(function(st, i){ return i; }));
+
   cardsWrap.innerHTML = "";
-  round.statements.forEach(function(st, idx){
+  currentOrder.forEach(function(originalIdx){
+    var st = round.statements[originalIdx];
     var card = document.createElement('div');
     card.className = 'card';
     card.textContent = st.text;
-    card.setAttribute('data-idx', idx);
-    card.addEventListener('click', function(){ handleAnswer(idx, card); });
+    card.setAttribute('data-orig', originalIdx);
+    card.addEventListener('click', function(){ handleAnswer(originalIdx, card); });
     cardsWrap.appendChild(card);
   });
 }
 
-function handleAnswer(idx, cardEl){
+function handleAnswer(originalIdx, cardEl){
   if(answeredThisRound) return;
   answeredThisRound = true;
 
   var round = ROUNDS[currentRound];
-  var chosen = round.statements[idx];
+  var chosen = round.statements[originalIdx];
   var correct = chosen.lie === true;
   if(correct) score++;
 
   var cards = cardsWrap.querySelectorAll('.card');
   cards.forEach(function(c){
-    var i = parseInt(c.getAttribute('data-idx'), 10);
+    var i = parseInt(c.getAttribute('data-orig'), 10);
     var st = round.statements[i];
     c.classList.add('disabled');
     if(st.lie){
       c.classList.add('correct');
-    } else if(i === idx){
+    } else if(i === originalIdx){
       c.classList.add('wrong');
     } else {
       c.classList.add('dim');
@@ -396,7 +410,8 @@ function handleAnswer(idx, cardEl){
 
   var headline = correct ? "Correct, that's the lie." : "Not quite, that one's actually true.";
   var html = "<strong>" + headline + "</strong>";
-  round.statements.forEach(function(st){
+  currentOrder.forEach(function(originalStIdx){
+    var st = round.statements[originalStIdx];
     html += "<p style='margin:0 0 10px;'>" + st.note + "</p>";
   });
   feedback.innerHTML = html;
@@ -410,57 +425,57 @@ function handleAnswer(idx, cardEl){
 }
 
 nextBtn.addEventListener('click', function(){
-  currentRound++;
-  if(currentRound < TOTAL){
-    renderRound();
-  } else {
-    showFinal();
-  }
+ currentRound++;
+ if(currentRound < TOTAL){
+ renderRound();
+ } else {
+ showFinal();
+ }
 });
 
 function showFinal(){
-  showScreen(screenFinal);
-  finalScore.textContent = score + "/" + TOTAL;
-  var pct = Math.round((score / TOTAL) * 100);
-  var msg;
-  if(pct === 100){
-    msg = "Excellent work, " + playerName + " \u2014 you spotted every lie.";
-  } else if(pct >= 70){
-    msg = "Solid understanding, " + playerName + ". A quick look back at any missed rounds will lock it in.";
-  } else {
-    msg = "Good first pass, " + playerName + ". Worth revisiting this week's reading before you move on.";
-  }
-  finalMsg.textContent = msg;
-  submitScore();
+ showScreen(screenFinal);
+ finalScore.textContent = score + "/" + TOTAL;
+ var pct = Math.round((score / TOTAL) * 100);
+ var msg;
+ if(pct === 100){
+ msg = "Excellent work, " + playerName + " \u2014 you spotted every lie.";
+ } else if(pct >= 70){
+ msg = "Solid understanding, " + playerName + ". A quick look back at any missed rounds will lock it in.";
+ } else {
+ msg = "Good first pass, " + playerName + ". Worth revisiting this week's reading before you move on.";
+ }
+ finalMsg.textContent = msg;
+ submitScore();
 }
 
 function submitScore(){
-  savingMsg.textContent = "Saving your result...";
-  var payload = {
-    activity: "edu60017-two-truths-lie",
-    name: playerName,
-    score: score,
-    total: TOTAL,
-    timestamp: new Date().toISOString()
-  };
-  try{
-    fetch("https://script.google.com/macros/s/AKfycbxutYN2GTiMq2G1fyGKhy7TDgPEYGmzx7T1cuJbFrQvCnLqCmFW9utQtkSZ0RBKdm_imA/exec", {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "text/plain" },
-      body: JSON.stringify(payload)
-    });
-  }catch(e){}
-  setTimeout(function(){
-    savingMsg.textContent = "Result saved.";
-  }, 1200);
+ savingMsg.textContent = "Saving your result...";
+ var payload = {
+ activity: "edu60017-two-truths-lie",
+ name: playerName,
+ score: score,
+ total: TOTAL,
+ timestamp: new Date().toISOString()
+ };
+ try{
+ fetch("https://script.google.com/macros/s/AKfycbxutYN2GTiMq2G1fyGKhy7TDgPEYGmzx7T1cuJbFrQvCnLqCmFW9utQtkSZ0RBKdm_imA/exec", {
+ method: "POST",
+ mode: "no-cors",
+ headers: { "Content-Type": "text/plain" },
+ body: JSON.stringify(payload)
+ });
+ }catch(e){}
+ setTimeout(function(){
+ savingMsg.textContent = "Result saved.";
+ }, 1200);
 }
 
 replayBtn.addEventListener('click', function(){
-  currentRound = 0;
-  score = 0;
-  showScreen(screenGame);
-  renderRound();
+ currentRound = 0;
+ score = 0;
+ showScreen(screenGame);
+ renderRound();
 });
 </script>
 </body>
