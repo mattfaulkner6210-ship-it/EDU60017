@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EDU60017 Week 2 Speed Jeopardy — Learning Theories Review</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --navy: #1b1f3b;
+    --navy-light: #262c52;
+    --gold: #f2c14e;
+    --coral: #ef6461;
+    --teal: #2a9d8f;
+    --green: #4caf72;
+    --cream: #f4f1de;
+    --white: #ffffff;
+    --grey: #8890b5;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: linear-gradient(160deg, var(--navy) 0%, #12152b 100%);
+    color: var(--cream);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .app { width: 100%; max-width: 960px; }
+  h1, h2, h3 { font-family: 'Poppins', sans-serif; }
+
+  /* ---------- Name gate ---------- */
+  #gate {
+    text-align: center;
+    background: var(--navy-light);
+    border-radius: 16px;
+    padding: 44px 32px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+  }
+  #gate h1 { font-size: 1.8rem; color: var(--gold); margin-bottom: 8px; }
+  #gate p { color: var(--grey); margin-bottom: 8px; font-size: 0.95rem; }
+  #gate .rules { color: var(--grey); font-size: 0.82rem; margin: 16px 0 22px; line-height: 1.6; }
+  #gate .rules b { color: var(--cream); }
+  #gate input {
+    width: 100%; max-width: 320px; padding: 12px 16px; border-radius: 8px;
+    border: 2px solid var(--teal); background: var(--navy); color: var(--cream);
+    font-size: 1rem; margin-bottom: 18px;
+  }
+  #gate input:focus { outline: none; border-color: var(--gold); }
+
+  button {
+    font-family: 'Poppins', sans-serif; font-weight: 700; border: none; border-radius: 8px;
+    padding: 12px 28px; font-size: 1rem; cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+  button:hover { transform: translateY(-2px); }
+  .btn-primary { background: var(--gold); color: var(--navy); }
+  .btn-primary:hover { box-shadow: 0 6px 16px rgba(242,193,78,0.4); }
+
+  /* ---------- Header / score ---------- */
+  #game { display: none; }
+  #topbar {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px; flex-wrap: wrap; gap: 10px;
+  }
+  #topbar h1 { font-size: 1.3rem; color: var(--gold); }
+  #topbar .sub { color: var(--grey); font-size: 0.82rem; display: block; margin-top: 2px; }
+
+  .stat-row { display: flex; gap: 10px; }
+  .statbox {
+    background: var(--navy-light); padding: 8px 16px; border-radius: 10px; text-align: center; min-width: 90px;
+  }
+  .statbox .label { font-size: 0.65rem; color: var(--grey); letter-spacing: 1px; text-transform: uppercase; }
+  .statbox .val { font-family: 'Poppins', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--gold); }
+  #timer-box .val { color: var(--coral); }
+  #timer-box.low .val { animation: pulse 0.6s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+  /* ---------- Board ---------- */
+  #board { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .cat-header {
+    background: var(--teal); color: var(--white); font-family: 'Poppins', sans-serif; font-weight: 700;
+    font-size: 0.72rem; text-align: center; padding: 10px 4px; border-radius: 8px; text-transform: uppercase;
+    letter-spacing: 0.5px; min-height: 52px; display: flex; align-items: center; justify-content: center; line-height: 1.2;
+  }
+  .tile {
+    background: var(--navy-light); border: 2px solid var(--navy); border-radius: 8px; padding: 26px 4px;
+    text-align: center; font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1.3rem; color: var(--gold);
+    cursor: pointer; transition: all 0.15s ease;
+  }
+  .tile:hover:not(.done) { background: var(--coral); color: var(--white); transform: scale(1.04); }
+  .tile.done { background: transparent; border-color: var(--navy-light); color: var(--navy-light); cursor: default; }
+
+  /* ---------- Toasts ---------- */
+  #toast {
+    position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-20px);
+    background: var(--gold); color: var(--navy); font-family: 'Poppins', sans-serif; font-weight: 800;
+    padding: 12px 26px; border-radius: 30px; box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    opacity: 0; transition: all 0.3s ease; z-index: 30; pointer-events: none; font-size: 0.95rem;
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ---------- Modal ---------- */
+  #modal-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+    align-items: center; justify-content: center; padding: 20px; z-index: 10;
+  }
+  #modal {
+    background: var(--navy-light); border-radius: 16px; padding: 32px; max-width: 580px; width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+
+  #dd-screen {
+    display: none; text-align: center; padding: 40px 20px;
+  }
+  #dd-screen h2 {
+    font-size: 2.2rem; color: var(--gold); text-shadow: 0 0 20px rgba(242,193,78,0.6);
+    animation: ddpulse 0.5s ease infinite alternate;
+  }
+  @keyframes ddpulse { from { transform: scale(1); } to { transform: scale(1.06); } }
+
+  #clue-screen .cat-tag {
+    display: inline-block; background: var(--teal); color: var(--white); font-size: 0.7rem; font-weight: 700;
+    padding: 4px 12px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px;
+  }
+  #clue-screen .points {
+    float: right; font-family: 'Poppins', sans-serif; font-weight: 800; color: var(--gold); font-size: 1.1rem;
+  }
+
+  #q-timer-track {
+    background: var(--navy); height: 6px; border-radius: 3px; overflow: hidden; margin: 4px 0 18px;
+  }
+  #q-timer-fill {
+    background: var(--coral); height: 100%; width: 100%; transition: width 0.1s linear;
+  }
+
+  #clue-text { font-size: 1.1rem; line-height: 1.5; margin: 4px 0 20px; color: var(--cream); clear: both; }
+
+  .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .opt-btn {
+    background: var(--navy); color: var(--cream); border: 2px solid var(--grey); border-radius: 10px;
+    padding: 14px 12px; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.92rem;
+    text-align: left; cursor: pointer; transition: all 0.15s ease;
+  }
+  .opt-btn:hover:not(:disabled) { border-color: var(--gold); background: var(--navy-light); }
+  .opt-btn:disabled { cursor: default; }
+  .opt-btn.correct { background: rgba(76,175,114,0.25); border-color: var(--green); color: var(--white); }
+  .opt-btn.wrong { background: rgba(239,100,97,0.25); border-color: var(--coral); color: var(--white); }
+
+  #feedback-row { margin-top: 18px; display: none; text-align: center; }
+  #feedback-text { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1.1rem; margin-bottom: 6px; }
+  #feedback-explain { color: var(--grey); font-size: 0.85rem; margin-bottom: 16px; }
+
+  @media (max-width: 640px) {
+    #board { grid-template-columns: repeat(5, 1fr); }
+    .tile { font-size: 0.85rem; padding: 16px 2px; }
+    .cat-header { font-size: 0.5rem; padding: 6px 2px; min-height: 38px; }
+    .options-grid { grid-template-columns: 1fr; }
+    #modal { padding: 22px; }
+    .stat-row { flex-wrap: wrap; }
+  }
+
+  /* ---------- Final screen ---------- */
+  #final { display: none; text-align: center; background: var(--navy-light); border-radius: 16px; padding: 44px 30px; }
+  #final h1 { color: var(--gold); font-size: 1.7rem; margin-bottom: 8px; }
+  #final .final-score { font-family: 'Poppins', sans-serif; font-size: 2.8rem; font-weight: 800; color: var(--teal); margin: 16px 0; }
+  #save-status { font-size: 0.85rem; color: var(--grey); min-height: 20px; margin-bottom: 18px; }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <div id="gate">
+    <h1>⚡ Speed Jeopardy</h1>
+    <p>EDU60017 — Week 2: Behaviourism, Cognitivism, Constructivism &amp; Development</p>
+    <div class="rules">
+      10 questions · <b>15 seconds</b> to answer each · one hidden <b>Daily Double</b> (2x points)<br>
+      Build a <b>streak</b> for bonus points · whole game capped at <b>5 minutes</b>
+    </div>
+    <input type="text" id="name-input" placeholder="Enter your first name" maxlength="30">
+    <br>
+    <button class="btn-primary" onclick="startGame()">Start Game</button>
+  </div>
+
+  <div id="game">
+    <div id="topbar">
+      <div>
+        <h1>Speed Jeopardy</h1>
+        <span class="sub">Pick a category and point value</span>
+      </div>
+      <div class="stat-row">
+        <div class="statbox" id="timer-box">
+          <div class="label">Time Left</div>
+          <div class="val" id="session-timer">5:00</div>
+        </div>
+        <div class="statbox">
+          <div class="label">Streak</div>
+          <div class="val" id="streak-display">0</div>
+        </div>
+        <div class="statbox">
+          <div class="label">Score</div>
+          <div class="val" id="score-display">0</div>
+        </div>
+      </div>
+    </div>
+    <div id="board"></div>
+  </div>
+
+  <div id="final">
+    <h1 id="final-title">Board Complete! 🎉</h1>
+    <p style="color: var(--grey);">Nice work working through this week's theories.</p>
+    <div class="final-score" id="final-score-display">0</div>
+    <p id="save-status">Saving your result...</p>
+    <button class="btn-primary" onclick="location.reload()">Play Again</button>
+  </div>
+
+</div>
+
+<div id="toast"></div>
+
+<div id="modal-overlay">
+  <div id="modal">
+
+    <div id="dd-screen">
+      <h2>🎯 DAILY DOUBLE!</h2>
+      <p style="color: var(--grey); margin-top: 10px;">This one's worth double points. Get ready...</p>
+    </div>
+
+    <div id="clue-screen">
+      <span class="points" id="modal-points"></span>
+      <div class="cat-tag" id="modal-cat"></div>
+      <div id="q-timer-track"><div id="q-timer-fill"></div></div>
+      <div id="clue-text"></div>
+      <div class="options-grid" id="options-grid"></div>
+
+      <div id="feedback-row">
+        <div id="feedback-text"></div>
+        <div id="feedback-explain"></div>
+        <button class="btn-primary" onclick="nextAfterFeedback()">Continue</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const ACTIVITY_ID = "edu60017-jeopardy-week2";
+  const SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxutYN2GTiMq2G1fyGKhy7TDgPEYGmzx7T1cuJbFrQvCnLqCmFW9utQtkSZ0RBKdm_imA/exec";
+
+  const QUESTION_SECONDS = 15;
+  const SESSION_SECONDS = 300; // 5 minutes hard cap
+  const STREAK_BONUS_EVERY = 3;
+  const STREAK_BONUS_POINTS = 50;
+
+  const CATEGORIES = [
+    {
+      name: "Behaviourism",
+      clues: [
+        { points: 100, q: "What type of conditioning did Pavlov demonstrate using dogs and a bell?",
+          options: ["Classical conditioning", "Operant conditioning", "Social learning", "Cognitive mapping"], correct: 0,
+          explain: "Pavlov paired a neutral stimulus (the bell) with an automatic response until the bell alone triggered it." },
+        { points: 300, q: "What term describes stopping reinforcement so a behaviour gradually disappears?",
+          options: ["Shaping", "Extinction", "Generalisation", "Modelling"], correct: 1,
+          explain: "Removing reinforcement causes a previously learned behaviour to fade over time." }
+      ]
+    },
+    {
+      name: "Cognitivism",
+      clues: [
+        { points: 100, q: "What are the three memory stores in the multistore model?",
+          options: ["Conscious, subconscious, unconscious", "Sensory, working, long-term memory", "Iconic, echoic, haptic", "Explicit, implicit, procedural"], correct: 1,
+          explain: "Information moves from sensory memory to working memory, and can be encoded into long-term memory." },
+        { points: 300, q: "What strategy groups information into meaningful units to ease working memory load?",
+          options: ["Scaffolding", "Encoding", "Chunking", "Rehearsal loop"], correct: 2,
+          explain: "Chunking reduces the number of individual items a learner has to hold in mind at once." }
+      ]
+    },
+    {
+      name: "Constructivism",
+      clues: [
+        { points: 100, q: "According to constructivism, learners...",
+          options: ["Passively absorb facts", "Actively build their own understanding", "Learn only through rewards", "Learn identically regardless of experience"], correct: 1,
+          explain: "Constructivism sees learners as active participants who build understanding through experience." },
+        { points: 300, q: "Constructivist teaching typically positions the teacher as a...",
+          options: ["Sole source of facts", "Behaviour enforcer", "Facilitator of exploration", "Passive observer"], correct: 2,
+          explain: "Constructivist classrooms favour guided exploration and discussion over direct transmission of content." }
+      ]
+    },
+    {
+      name: "Vygotsky &amp; ZPD",
+      clues: [
+        { points: 100, q: "The gap between what a learner can do alone vs. with help is called the...",
+          options: ["Cognitive Load Zone", "Working Memory Gap", "Zone of Proximal Development", "Development Threshold"], correct: 2,
+          explain: "The ZPD is the 'sweet spot' where learning is most effective — not too easy, not out of reach." },
+        { points: 300, q: "Temporary support that's gradually withdrawn as a student becomes independent is called...",
+          options: ["Chunking", "Scaffolding", "Shaping", "Modelling"], correct: 1,
+          explain: "Like scaffolding on a building, it's removed once the learner's understanding can stand on its own." }
+      ]
+    },
+    {
+      name: "Sense of Self",
+      clues: [
+        { points: 100, q: "Belief in one's own ability to succeed at a specific task is called...",
+          options: ["Self-esteem", "Self-concept", "Self-efficacy", "Self-actualisation"], correct: 2,
+          explain: "Self-efficacy is task-specific — a student might feel efficacious in maths but not in public speaking." },
+        { points: 300, q: "A person's overall belief about their own worth is called...",
+          options: ["Self-efficacy", "Self-esteem", "Self-concept", "Metacognition"], correct: 1,
+          explain: "Self-esteem is the evaluative, feelings-based judgement someone makes about themselves." }
+      ]
+    }
+  ];
+
+  let studentName = "";
+  let score = 0;
+  let streak = 0;
+  let totalTiles = 0;
+  let tilesDone = 0;
+  let currentTile = null;
+  let dailyDoubleId = null;
+  let qTimerInterval = null;
+  let sessionTimerInterval = null;
+  let sessionSecondsLeft = SESSION_SECONDS;
+  let answered = false;
+
+  function startGame() {
+    const input = document.getElementById('name-input');
+    const name = input.value.trim();
+    if (!name) {
+      input.style.borderColor = 'var(--coral)';
+      input.placeholder = "Please enter your name to start";
+      return;
+    }
+    studentName = name;
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('game').style.display = 'block';
+    buildBoard();
+    assignDailyDouble();
+    startSessionTimer();
+  }
+
+  function buildBoard() {
+    const board = document.getElementById('board');
+    board.innerHTML = '';
+    CATEGORIES.forEach(cat => {
+      const h = document.createElement('div');
+      h.className = 'cat-header';
+      h.innerHTML = cat.name;
+      board.appendChild(h);
+    });
+    const pointLevels = [100, 300];
+    pointLevels.forEach(points => {
+      CATEGORIES.forEach((cat, catIndex) => {
+        const clueIndex = cat.clues.findIndex(c => c.points === points);
+        const tile = document.createElement('div');
+        tile.className = 'tile';
+        tile.textContent = '$' + points;
+        tile.id = `tile-${catIndex}-${clueIndex}`;
+        tile.onclick = () => openTile(catIndex, clueIndex, tile);
+        board.appendChild(tile);
+        totalTiles++;
+      });
+    });
+  }
+
+  function assignDailyDouble() {
+    const allIds = [];
+    CATEGORIES.forEach((cat, ci) => cat.clues.forEach((c, qi) => allIds.push(`${ci}-${qi}`)));
+    dailyDoubleId = allIds[Math.floor(Math.random() * allIds.length)];
+  }
+
+  function startSessionTimer() {
+    updateSessionDisplay();
+    sessionTimerInterval = setInterval(() => {
+      sessionSecondsLeft--;
+      updateSessionDisplay();
+      if (sessionSecondsLeft <= 30) document.getElementById('timer-box').classList.add('low');
+      if (sessionSecondsLeft <= 0) {
+        clearInterval(sessionTimerInterval);
+        endGame(true);
+      }
+    }, 1000);
+  }
+
+  function updateSessionDisplay() {
+    const m = Math.floor(Math.max(sessionSecondsLeft, 0) / 60);
+    const s = Math.max(sessionSecondsLeft, 0) % 60;
+    document.getElementById('session-timer').textContent = `${m}:${s.toString().padStart(2, '0')}`;
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 1400);
+  }
+
+  function openTile(catIndex, clueIndex, tileEl) {
+    if (tileEl.classList.contains('done')) return;
+    const cat = CATEGORIES[catIndex];
+    const clue = cat.clues[clueIndex];
+    const isDD = dailyDoubleId === `${catIndex}-${clueIndex}`;
+    currentTile = { catIndex, clueIndex, tileEl, clue, isDD, pointsAwarded: isDD ? clue.points * 2 : clue.points };
+    answered = false;
+
+    document.getElementById('modal-overlay').style.display = 'flex';
+
+    if (isDD) {
+      document.getElementById('dd-screen').style.display = 'block';
+      document.getElementById('clue-screen').style.display = 'none';
+      setTimeout(() => {
+        document.getElementById('dd-screen').style.display = 'none';
+        showClue();
+      }, 1400);
+    } else {
+      document.getElementById('dd-screen').style.display = 'none';
+      showClue();
+    }
+  }
+
+  function showClue() {
+    const { clue, isDD, pointsAwarded } = currentTile;
+    document.getElementById('clue-screen').style.display = 'block';
+    document.getElementById('modal-cat').innerHTML = CATEGORIES[currentTile.catIndex].name;
+    document.getElementById('modal-points').textContent = (isDD ? '2x = ' : '') + '$' + pointsAwarded;
+    document.getElementById('clue-text').textContent = clue.q;
+    document.getElementById('feedback-row').style.display = 'none';
+
+    const grid = document.getElementById('options-grid');
+    grid.innerHTML = '';
+    clue.options.forEach((opt, i) => {
+      const b = document.createElement('button');
+      b.className = 'opt-btn';
+      b.textContent = opt;
+      b.onclick = () => selectAnswer(i);
+      grid.appendChild(b);
+    });
+
+    runQuestionTimer();
+  }
+
+  function runQuestionTimer() {
+    let timeLeft = QUESTION_SECONDS;
+    const fill = document.getElementById('q-timer-fill');
+    fill.style.width = '100%';
+    clearInterval(qTimerInterval);
+    qTimerInterval = setInterval(() => {
+      timeLeft -= 0.1;
+      fill.style.width = Math.max((timeLeft / QUESTION_SECONDS) * 100, 0) + '%';
+      if (timeLeft <= 0) {
+        clearInterval(qTimerInterval);
+        if (!answered) selectAnswer(-1); // timeout = no answer
+      }
+    }, 100);
+  }
+
+  function selectAnswer(choiceIndex) {
+    if (answered) return;
+    answered = true;
+    clearInterval(qTimerInterval);
+
+    const { clue, pointsAwarded } = currentTile;
+    const buttons = document.querySelectorAll('.opt-btn');
+    buttons.forEach((b, i) => {
+      b.disabled = true;
+      if (i === clue.correct) b.classList.add('correct');
+      else if (i === choiceIndex) b.classList.add('wrong');
+    });
+
+    const isCorrect = choiceIndex === clue.correct;
+    let bonusMsg = '';
+
+    if (isCorrect) {
+      streak++;
+      score += pointsAwarded;
+      if (streak > 0 && streak % STREAK_BONUS_EVERY === 0) {
+        score += STREAK_BONUS_POINTS;
+        bonusMsg = ` +${STREAK_BONUS_POINTS} streak bonus! 🔥`;
+        showToast(`🔥 ${streak} in a row! +${STREAK_BONUS_POINTS} bonus`);
+      }
+    } else {
+      streak = 0;
+    }
+
+    document.getElementById('score-display').textContent = score;
+    document.getElementById('streak-display').textContent = streak;
+
+    const fb = document.getElementById('feedback-text');
+    const fe = document.getElementById('feedback-explain');
+    if (choiceIndex === -1) {
+      fb.textContent = "⏱ Time's up!";
+      fb.style.color = 'var(--coral)';
+    } else if (isCorrect) {
+      fb.textContent = `Correct! +${pointsAwarded}${bonusMsg}`;
+      fb.style.color = 'var(--green)';
+    } else {
+      fb.textContent = "Not quite!";
+      fb.style.color = 'var(--coral)';
+    }
+    fe.textContent = clue.explain;
+    document.getElementById('feedback-row').style.display = 'block';
+  }
+
+  function nextAfterFeedback() {
+    document.getElementById('modal-overlay').style.display = 'none';
+    currentTile.tileEl.classList.add('done');
+    currentTile.tileEl.textContent = currentTile.isDD ? '🎯' : '✓';
+    tilesDone++;
+    currentTile = null;
+
+    if (tilesDone >= totalTiles) {
+      endGame(false);
+    }
+  }
+
+  function endGame(timedOut) {
+    clearInterval(sessionTimerInterval);
+    clearInterval(qTimerInterval);
+    document.getElementById('modal-overlay').style.display = 'none';
+    document.getElementById('game').style.display = 'none';
+    document.getElementById('final').style.display = 'block';
+    document.getElementById('final-title').textContent = timedOut ? "Time's Up! ⏱" : "Board Complete! 🎉";
+    document.getElementById('final-score-display').textContent = score;
+    saveScore();
+  }
+
+  function saveScore() {
+    const maxPossible = CATEGORIES.reduce((sum, cat) => sum + cat.clues.reduce((s, c) => s + c.points, 0), 0) + 300; // +daily double extra
+    const payload = {
+      activity: ACTIVITY_ID,
+      name: studentName,
+      score: score,
+      total: maxPossible,
+      timestamp: new Date().toISOString()
+    };
+
+    fetch(SHEET_WEBAPP_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).catch(() => {});
+
+    setTimeout(() => {
+      document.getElementById('save-status').textContent = "Result saved ✓";
+    }, 1200);
+  }
+</script>
+
+</body>
+</html>
