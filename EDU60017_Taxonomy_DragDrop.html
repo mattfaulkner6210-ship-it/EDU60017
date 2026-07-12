@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EDU60017_Taxonomy_DragDrop</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(to bottom, #eaf6fb 0%, #cfe9f7 6%, #0d4a73 14%, #0a3a5c 100%);
+    color: #1a3a4a;
+  }
+  .wrap { max-width: 780px; margin: 0 auto; padding: 30px 18px 60px; }
+  h1 { font-size: 23px; color: #123a4d; margin: 0 0 6px; }
+  h2 { font-size: 18px; color: #ffffff; margin: 40px 0 4px; }
+  .intro { font-size: 15px; line-height: 1.5; color: #1e4c61; margin: 0 0 10px; }
+  .section-intro { font-size: 14px; line-height: 1.5; color: #eaf6ff; margin: 0 0 16px; }
+
+  .panel {
+    background: rgba(255,255,255,0.95);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 18px;
+  }
+  .panel-dark {
+    background: rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 18px;
+  }
+
+  .pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    min-height: 56px;
+    padding: 10px;
+    border: 1.5px dashed #b8c9d1;
+    border-radius: 10px;
+    background: rgba(207,233,247,0.4);
+    margin-bottom: 16px;
+  }
+  .pool-dark {
+    border: 1.5px dashed rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.06);
+  }
+
+  .dnd-chip {
+    touch-action: none;
+    user-select: none;
+    background: #1670a3;
+    color: #ffffff;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: grab;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    line-height: 1.4;
+    max-width: 260px;
+  }
+  .dnd-chip .desc {
+    display: block;
+    font-size: 11px;
+    font-weight: 400;
+    color: #dbeeff;
+    margin-top: 2px;
+  }
+  .dnd-chip.dragging { opacity: 0.85; z-index: 500; box-shadow: 0 6px 14px rgba(0,0,0,0.35); }
+
+  .seq-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .seq-num {
+    flex: 0 0 22px;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    border-radius: 50%;
+    background: #123a4d;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .dnd-slot {
+    flex: 1;
+    min-height: 48px;
+    border: 1.5px dashed #b8c9d1;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.6);
+    display: flex;
+    align-items: center;
+    padding: 4px;
+  }
+  .dnd-slot.correct { border-color: #2e8b57; background: rgba(46,139,87,0.12); }
+  .dnd-slot.incorrect { border-color: #c0392b; background: rgba(192,57,43,0.12); }
+  .track-labels { display: flex; justify-content: space-between; font-size: 11px; color: #3f6377; margin: -4px 0 8px; padding: 0 32px 0 0; }
+
+  .scenario-card {
+    background: rgba(255,255,255,0.95);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+  .scenario-text { font-size: 14px; line-height: 1.55; color: #274c60; margin: 0 0 10px; }
+  .scenario-drop {
+    min-height: 46px;
+    border: 1.5px dashed #b8c9d1;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    background: rgba(207,233,247,0.35);
+  }
+  .scenario-drop.correct { border-color: #2e8b57; background: rgba(46,139,87,0.12); }
+  .scenario-drop.incorrect { border-color: #c0392b; background: rgba(192,57,43,0.12); }
+
+  .btn-row { display: flex; gap: 10px; margin-top: 6px; flex-wrap: wrap; }
+  button.action {
+    background: #123a4d;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  button.action.secondary { background: rgba(255,255,255,0.15); color: #eaf6ff; }
+  .result-msg { font-size: 13px; margin-top: 8px; color: #123a4d; font-weight: 500; }
+  .result-msg.dark { color: #eaf6ff; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>End of week: order it, then match it</h1>
+    <p class="intro">Two quick drag-and-drop challenges to check your understanding of Bloom's and SOLO before the week wraps up. Drag the chips into place, then hit &ldquo;Check my answers&rdquo; &mdash; you can keep adjusting until you're happy.</p>
+  </header>
+
+  <div class="panel">
+    <h2 style="color:#123a4d; margin-top:0;">Part 1a &mdash; Order Bloom's Taxonomy</h2>
+    <p style="font-size:13px; color:#3f6377; margin:0 0 10px;">Drag each level from the pool into the ladder below, from the most basic (top) to the most complex (bottom).</p>
+    <div class="pool" id="pool-bloom"></div>
+    <div class="track-labels"><span>Simplest</span><span>Most complex</span></div>
+    <div id="slots-bloom"></div>
+    <div class="btn-row">
+      <button class="action" onclick="checkSection('bloom')">Check my answers</button>
+      <button class="action secondary" onclick="resetSection('bloom')">Reset</button>
+    </div>
+    <div class="result-msg" id="result-bloom"></div>
+  </div>
+
+  <div class="panel">
+    <h2 style="color:#123a4d; margin-top:0;">Part 1b &mdash; Order the SOLO Taxonomy</h2>
+    <p style="font-size:13px; color:#3f6377; margin:0 0 10px;">Same idea &mdash; simplest understanding at the top, deepest at the bottom.</p>
+    <div class="pool" id="pool-solo"></div>
+    <div class="track-labels"><span>Simplest</span><span>Most complex</span></div>
+    <div id="slots-solo"></div>
+    <div class="btn-row">
+      <button class="action" onclick="checkSection('solo')">Check my answers</button>
+      <button class="action secondary" onclick="resetSection('solo')">Reset</button>
+    </div>
+    <div class="result-msg" id="result-solo"></div>
+  </div>
+
+  <h2>Part 2 &mdash; Match the verb to the scenario</h2>
+  <p class="section-intro">Five scenarios from a pre-service teacher's placement. Drag the alternative verb onto the scenario it best describes &mdash; note, these are <em>not</em> the textbook Bloom's or SOLO words, so think about the type of thinking each one shows.</p>
+  <div class="panel-dark">
+    <div class="pool pool-dark" id="pool-match"></div>
+    <div id="scenarios-match"></div>
+    <div class="btn-row">
+      <button class="action" onclick="checkSection('match')">Check my answers</button>
+      <button class="action secondary" onclick="resetSection('match')">Reset</button>
+    </div>
+    <div class="result-msg dark" id="result-match"></div>
+  </div>
+</div>
+
+<script>
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  const bloomLevels = [
+    { value: "Remember", desc: "Recall facts and basic concepts" },
+    { value: "Understand", desc: "Explain ideas in your own words" },
+    { value: "Apply", desc: "Use information in a new situation" },
+    { value: "Analyse", desc: "Draw connections among ideas" },
+    { value: "Evaluate", desc: "Justify a stance or decision" },
+    { value: "Create", desc: "Produce new or original work" }
+  ];
+
+  const soloLevels = [
+    { value: "Prestructural", desc: "No real understanding yet" },
+    { value: "Unistructural", desc: "One relevant idea is understood" },
+    { value: "Multistructural", desc: "Several ideas understood, not yet connected" },
+    { value: "Relational", desc: "Ideas connected into a coherent whole" },
+    { value: "Extended abstract", desc: "Understanding generalised to new situations" }
+  ];
+
+  const scenarios = [
+    {
+      id: "s1",
+      text: "A pre-service teacher looks at two different behaviour management approaches used in her placement classroom and works out which elements of each would suit a Year 3 class, and why.",
+      correct: "Compare and contrast"
+    },
+    {
+      id: "s2",
+      text: "After running a maths lesson, a teacher watches the recording back and judges which parts of the lesson worked, which didn't, and what evidence supports that judgement.",
+      correct: "Critique"
+    },
+    {
+      id: "s3",
+      text: "A teacher combines ideas from three different literacy programs she's studied to design a brand-new take-home reading routine tailored to her class's needs.",
+      correct: "Produce"
+    },
+    {
+      id: "s4",
+      text: "A pre-service teacher notices that the behaviour strategy that worked well with one student is actually the same principle behind the whole-class routine she learned in a different unit, and starts using both together as one consistent approach.",
+      correct: "Link it all together"
+    },
+    {
+      id: "s5",
+      text: "After finishing her placement, a pre-service teacher starts wondering whether the feedback techniques she used in her Year 4 maths lessons would work just as well in a completely different setting, like coaching a junior sports team.",
+      correct: "Take it further"
+    }
+  ];
+
+  const sections = {};
+
+  function buildChip(value, desc) {
+    const chip = document.createElement('div');
+    chip.className = 'dnd-chip';
+    chip.dataset.value = value;
+    chip.innerHTML = desc ? (value + '<span class="desc">' + desc + '</span>') : value;
+    attachDrag(chip);
+    return chip;
+  }
+
+  function initBloom() {
+    const pool = document.getElementById('pool-bloom');
+    const slotsWrap = document.getElementById('slots-bloom');
+    pool.innerHTML = '';
+    slotsWrap.innerHTML = '';
+    shuffle(bloomLevels).forEach(l => pool.appendChild(buildChip(l.value, l.desc)));
+    bloomLevels.forEach((l, i) => {
+      const row = document.createElement('div');
+      row.className = 'seq-row';
+      row.innerHTML = '<div class="seq-num">' + (i + 1) + '</div>';
+      const slot = document.createElement('div');
+      slot.className = 'dnd-slot';
+      slot.dataset.correct = l.value;
+      row.appendChild(slot);
+      slotsWrap.appendChild(row);
+    });
+    document.getElementById('result-bloom').textContent = '';
+  }
+
+  function initSolo() {
+    const pool = document.getElementById('pool-solo');
+    const slotsWrap = document.getElementById('slots-solo');
+    pool.innerHTML = '';
+    slotsWrap.innerHTML = '';
+    shuffle(soloLevels).forEach(l => pool.appendChild(buildChip(l.value, l.desc)));
+    soloLevels.forEach((l, i) => {
+      const row = document.createElement('div');
+      row.className = 'seq-row';
+      row.innerHTML = '<div class="seq-num">' + (i + 1) + '</div>';
+      const slot = document.createElement('div');
+      slot.className = 'dnd-slot';
+      slot.dataset.correct = l.value;
+      row.appendChild(slot);
+      slotsWrap.appendChild(row);
+    });
+    document.getElementById('result-solo').textContent = '';
+  }
+
+  function initMatch() {
+    const pool = document.getElementById('pool-match');
+    const scenariosWrap = document.getElementById('scenarios-match');
+    pool.innerHTML = '';
+    scenariosWrap.innerHTML = '';
+    const labels = scenarios.map(s => s.correct);
+    shuffle(labels).forEach(v => pool.appendChild(buildChip(v, null)));
+    shuffle(scenarios).forEach(s => {
+      const card = document.createElement('div');
+      card.className = 'scenario-card';
+      const p = document.createElement('p');
+      p.className = 'scenario-text';
+      p.textContent = s.text;
+      const drop = document.createElement('div');
+      drop.className = 'scenario-drop';
+      drop.dataset.correct = s.correct;
+      card.appendChild(p);
+      card.appendChild(drop);
+      scenariosWrap.appendChild(card);
+    });
+    document.getElementById('result-match').textContent = '';
+  }
+
+  function checkSection(key) {
+    const slotSelector = key === 'match' ? '.scenario-drop' : '#slots-' + key + ' .dnd-slot';
+    const slots = document.querySelectorAll(slotSelector);
+    let correctCount = 0;
+    let filledCount = 0;
+    slots.forEach(slot => {
+      slot.classList.remove('correct', 'incorrect');
+      const chip = slot.querySelector('.dnd-chip');
+      if (!chip) return;
+      filledCount++;
+      if (chip.dataset.value === slot.dataset.correct) {
+        slot.classList.add('correct');
+        correctCount++;
+      } else {
+        slot.classList.add('incorrect');
+      }
+    });
+    const resultEl = document.getElementById('result-' + key);
+    if (filledCount < slots.length) {
+      resultEl.textContent = 'Fill every slot first \u2014 ' + filledCount + ' of ' + slots.length + ' placed so far.';
+    } else if (correctCount === slots.length) {
+      resultEl.textContent = 'All correct! Nice work.';
+    } else {
+      resultEl.textContent = correctCount + ' of ' + slots.length + ' correct \u2014 adjust the red ones and check again.';
+    }
+  }
+
+  function resetSection(key) {
+    if (key === 'bloom') initBloom();
+    if (key === 'solo') initSolo();
+    if (key === 'match') initMatch();
+  }
+
+  // Generic pointer-based drag and drop (mouse + touch)
+  let activeChip = null;
+  let activeOriginParent = null;
+  let offsetX = 0, offsetY = 0;
+
+  function attachDrag(chip) {
+    chip.addEventListener('pointerdown', onPointerDown);
+  }
+
+  function onPointerDown(e) {
+    const chip = e.currentTarget;
+    activeChip = chip;
+    activeOriginParent = chip.parentElement;
+    const rect = chip.getBoundingClientRect();
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+    chip.classList.add('dragging');
+    chip.style.position = 'fixed';
+    chip.style.left = rect.left + 'px';
+    chip.style.top = rect.top + 'px';
+    chip.style.width = rect.width + 'px';
+    chip.style.zIndex = '999';
+    chip.addEventListener('pointermove', onPointerMove);
+    chip.addEventListener('pointerup', onPointerUp);
+    chip.setPointerCapture(e.pointerId);
+  }
+
+  function onPointerMove(e) {
+    if (!activeChip) return;
+    activeChip.style.left = (e.clientX - offsetX) + 'px';
+    activeChip.style.top = (e.clientY - offsetY) + 'px';
+  }
+
+  function onPointerUp(e) {
+    if (!activeChip) return;
+    const chip = activeChip;
+    chip.removeEventListener('pointermove', onPointerMove);
+    chip.removeEventListener('pointerup', onPointerUp);
+    chip.classList.remove('dragging');
+    chip.style.position = '';
+    chip.style.left = '';
+    chip.style.top = '';
+    chip.style.width = '';
+
+    chip.style.visibility = 'hidden';
+    const dropEl = document.elementFromPoint(e.clientX, e.clientY);
+    chip.style.visibility = '';
+
+    let targetSlot = dropEl ? dropEl.closest('.dnd-slot, .scenario-drop, .pool') : null;
+
+    if (targetSlot && (targetSlot.classList.contains('dnd-slot') || targetSlot.classList.contains('scenario-drop'))) {
+      const existing = targetSlot.querySelector('.dnd-chip');
+      if (existing && existing !== chip) {
+        activeOriginParent.appendChild(existing);
+      }
+      targetSlot.classList.remove('correct', 'incorrect');
+      targetSlot.appendChild(chip);
+    } else if (targetSlot && targetSlot.classList.contains('pool')) {
+      targetSlot.appendChild(chip);
+    } else {
+      activeOriginParent.appendChild(chip);
+    }
+
+    activeChip = null;
+    activeOriginParent = null;
+  }
+
+  initBloom();
+  initSolo();
+  initMatch();
+</script>
+</body>
+</html>
