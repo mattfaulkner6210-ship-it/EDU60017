@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EDU60017_SurfaceToDeep_Accordion</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(to bottom, #eaf6fb 0%, #cfe9f7 12%, #0d4a73 22%, #0a3a5c 100%);
+    color: #1a3a4a;
+  }
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+  }
+  header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #123a4d;
+    margin: 0 0 8px;
+  }
+  header p {
+    font-size: 15px;
+    line-height: 1.5;
+    color: #1e4c61;
+    margin: 0 0 28px;
+  }
+  .dive-area {
+    position: relative;
+    display: flex;
+    gap: 18px;
+  }
+  .track-col {
+    position: relative;
+    width: 46px;
+    flex: 0 0 46px;
+  }
+  .track-line {
+    position: absolute;
+    left: 50%;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.7) 0 6px, transparent 6px 12px);
+    transform: translateX(-50%);
+  }
+  .depth-label {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    color: #eaf6fb;
+    background: rgba(13,74,115,0.55);
+    padding: 2px 6px;
+    border-radius: 8px;
+    white-space: nowrap;
+  }
+  .depth-label.top { top: -4px; color: #123a4d; background: rgba(255,255,255,0.7); }
+  .depth-label.bottom { bottom: -4px; }
+  .diver {
+    position: absolute;
+    left: 50%;
+    top: 8px;
+    width: 40px;
+    height: 40px;
+    transform: translate(-50%, -50%);
+    transition: top 0.6s cubic-bezier(.4,0,.2,1);
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.25));
+  }
+  .items-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .item {
+    background: rgba(255,255,255,0.94);
+    border-radius: 10px;
+    border: 0.5px solid #b8c9d1;
+    overflow: hidden;
+  }
+  .item-header {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 14px 16px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #123a4d;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .item-header .num {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    border-radius: 50%;
+    background: #1670a3;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 500;
+    flex: 0 0 22px;
+    margin-right: 10px;
+  }
+  .item-header .label { flex: 1; }
+  .chevron {
+    width: 14px;
+    height: 14px;
+    flex: 0 0 14px;
+    transition: transform 0.3s ease;
+    color: #3f6377;
+  }
+  .item.open .chevron { transform: rotate(90deg); }
+  .item-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+    padding: 0 16px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #274c60;
+  }
+  .item.open .item-body {
+    max-height: 300px;
+    padding: 0 16px 16px;
+  }
+  footer {
+    margin-top: 28px;
+    font-size: 14px;
+    color: #eaf6ff;
+    line-height: 1.6;
+    background: rgba(22,112,163,0.35);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>From surface to deep: six ways to get there</h1>
+    <p>You've seen the iceberg &mdash; now let's look at how teachers actually help students dive beneath the waterline. Click each strategy below to reveal what the research says. Watch our diver descend with you as you go.</p>
+  </header>
+
+  <div class="dive-area">
+    <div class="track-col">
+      <div class="track-line"></div>
+      <div class="depth-label top">Surface</div>
+      <div class="depth-label bottom">Deep</div>
+      <svg class="diver" id="diver" viewBox="0 0 40 40">
+        <circle cx="20" cy="12" r="6" fill="#ffe8c9"/>
+        <rect x="15" y="8" width="10" height="6" rx="2" fill="#123a4d"/>
+        <circle cx="20" cy="12" r="6.2" fill="none" stroke="#123a4d" stroke-width="1"/>
+        <rect x="14" y="17" width="12" height="13" rx="4" fill="#1670a3"/>
+        <rect x="10" y="18" width="5" height="9" rx="2.5" fill="#0d4a73"/>
+        <line x1="14" y1="21" x2="7" y2="16" stroke="#123a4d" stroke-width="2" stroke-linecap="round"/>
+        <line x1="26" y1="22" x2="33" y2="18" stroke="#123a4d" stroke-width="2" stroke-linecap="round"/>
+        <path d="M14 30 L9 38 L15 35 Z" fill="#123a4d"/>
+        <path d="M26 30 L31 38 L25 35 Z" fill="#123a4d"/>
+      </svg>
+    </div>
+
+    <div class="items-col" id="items">
+      <div class="item" data-index="0">
+        <button class="item-header">
+          <span style="display:flex;align-items:center;"><span class="num">1</span><span class="label">Ask &ldquo;why&rdquo;, not just &ldquo;what&rdquo;</span></span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+        <div class="item-body">
+          <p>Instead of asking students to recall a fact, ask them to explain it: why does this work, how does it connect to what we already know? Elaborative questioning forces learners to build reasoning instead of just retrieving a label.</p>
+        </div>
+      </div>
+
+      <div class="item" data-index="1">
+        <button class="item-header">
+          <span style="display:flex;align-items:center;"><span class="num">2</span><span class="label">Let students teach it</span></span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+        <div class="item-body">
+          <p>In reciprocal teaching, students take turns leading small-group discussion through four roles: summarising, questioning, clarifying and predicting. It's one of the higher-impact strategies in the research because it forces active processing rather than passive listening.</p>
+        </div>
+      </div>
+
+      <div class="item" data-index="2">
+        <button class="item-header">
+          <span style="display:flex;align-items:center;"><span class="num">3</span><span class="label">Draw the connections</span></span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+        <div class="item-body">
+          <p>Get students to physically map how ideas relate, rather than just listing them. Deep learning is fundamentally about linking new knowledge to prior understanding and spotting patterns &mdash; concept mapping makes those links visible instead of assumed.</p>
+        </div>
+      </div>
+
+      <div class="item" data-index="3">
+        <button class="item-header">
+          <span style="display:flex;align-items:center;"><span class="num">4</span><span class="label">Make feedback about the &ldquo;how&rdquo;</span></span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+        <div class="item-body">
+          <p>Effective feedback isn't &ldquo;well done&rdquo; &mdash; it's specific and improvement-focused, like pointing a student toward linking their evidence back to their thesis rather than just confirming an answer is correct. Feedback aimed at reasoning nudges students past surface accuracy.</p>
+        </div>
+      </div>
+
+      <div class="item" data-index="4">
+        <button class="item-header">
+          <span style="display:flex;align-items:center;"><span class="num">5</span><span class="label">Space it out</span></span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+        <div class="item-body">
+          <p>Revisiting a concept in different contexts over time &mdash; rather than one intensive session &mdash; consolidates surface knowledge into something transferable. Spaced, varied practice is one of the most reliable ways to help learning stick beyond the test.</p>
+        </div>
+      </div>
+
+      <div class="item" data-index="5">
+        <button class="item-header">
+          <span style="display:flex;align-items:center;"><span class="num">6</span><span class="label">Get them thinking about their thinking</span></span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+        <div class="item-body">
+          <p>Prompting students to evaluate their own understanding &mdash; what do I actually know, what am I still unsure about &mdash; builds the self-awareness that sits at the heart of deep learning. Metacognitive reflection is often the strategy that ties all the others together.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Which of these have you already tried in a classroom, training session or coaching moment &mdash; and which one might you experiment with next?
+  </footer>
+</div>
+
+<script>
+  const items = document.querySelectorAll('.item');
+  const diver = document.getElementById('diver');
+  const track = document.querySelector('.track-line');
+
+  function updateDiver() {
+    let maxOpen = -1;
+    items.forEach(function(item) {
+      if (item.classList.contains('open')) {
+        const idx = parseInt(item.getAttribute('data-index'), 10);
+        if (idx > maxOpen) maxOpen = idx;
+      }
+    });
+
+    const trackRect = track.getBoundingClientRect();
+    const colRect = document.querySelector('.track-col').getBoundingClientRect();
+    const top = trackRect.top - colRect.top;
+    const height = trackRect.height;
+    const total = items.length;
+
+    let fraction;
+    if (maxOpen === -1) {
+      fraction = 0;
+    } else {
+      fraction = (maxOpen + 1) / total;
+    }
+    diver.style.top = (top + fraction * height) + 'px';
+  }
+
+  items.forEach(function(item) {
+    const header = item.querySelector('.item-header');
+    header.addEventListener('click', function() {
+      item.classList.toggle('open');
+      updateDiver();
+    });
+  });
+
+  window.addEventListener('resize', updateDiver);
+  updateDiver();
+</script>
+</body>
+</html>
