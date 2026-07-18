@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>EDU60017_MoodSlider</title>
+<style>
+  /* ================= EDIT ZONE: palette & type =================
+     Calm, adult-appropriate palette on purpose — this is for a foundational
+     unit with many mature-age returning students, so it deliberately avoids
+     a "gamified"/childish look. Swap hex values below to reuse for another unit. */
+  :root{
+    --ink:#242b28;
+    --paper:#faf8f4;
+    --card:#ffffff;
+    --accent:#3b6e63;      /* primary calm teal-green */
+    --accent-soft:#e4efe9;
+    --border:#dcd6c9;
+    --shadow:0 4px 18px rgba(40,40,30,0.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    display:flex;align-items:center;justify-content:center;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    padding:24px 14px;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .card{
+    width:100%;max-width:480px;background:var(--card);border-radius:18px;
+    box-shadow:var(--shadow);border:1px solid var(--border);
+    padding:30px 28px 26px;
+  }
+  .eyebrow{font-size:0.74rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:0 0 6px;}
+  h1{font-size:1.25rem;line-height:1.35;margin:0 0 6px;font-weight:600;}
+  .sub{font-size:0.86rem;color:#5c6660;margin:0 0 26px;line-height:1.5;}
+
+  .mood-display{text-align:center;margin-bottom:6px;}
+  .mood-emoji{font-size:3rem;line-height:1;display:block;transition:transform .15s;}
+  .mood-label{font-size:1.05rem;font-weight:700;color:var(--accent);margin-top:6px;min-height:1.4em;}
+
+  input[type=range]{
+    width:100%;margin:18px 0 6px;
+    -webkit-appearance:none;appearance:none;
+    height:8px;border-radius:999px;
+    background:linear-gradient(90deg,#c98a5e,#d9b95e,#9bb35e,#6fae7c,var(--accent));
+    outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;appearance:none;
+    width:28px;height:28px;border-radius:50%;
+    background:#fff;border:3px solid var(--accent);
+    box-shadow:0 2px 6px rgba(0,0,0,0.18);cursor:pointer;
+  }
+  input[type=range]::-moz-range-thumb{
+    width:28px;height:28px;border-radius:50%;
+    background:#fff;border:3px solid var(--accent);
+    box-shadow:0 2px 6px rgba(0,0,0,0.18);cursor:pointer;border:3px solid var(--accent);
+  }
+  .scale-labels{display:flex;justify-content:space-between;font-size:0.68rem;color:#8a9088;margin-bottom:22px;}
+
+  label.field-label{display:block;font-size:0.82rem;font-weight:600;margin:4px 0 8px;color:#3a423d;}
+  textarea{
+    width:100%;border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;
+    font-family:inherit;font-size:0.88rem;resize:vertical;min-height:60px;
+    background:#fdfcf9;color:var(--ink);
+  }
+  textarea:focus, input[type=range]:focus{outline:2px solid var(--accent);outline-offset:2px;}
+
+  .name-row{display:flex;align-items:center;gap:8px;margin:16px 0 4px;font-size:0.8rem;color:#5c6660;}
+  .name-row input[type=text]{
+    flex:1;border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-size:0.85rem;font-family:inherit;
+  }
+
+  .submit-btn{
+    width:100%;margin-top:20px;padding:13px;border:none;border-radius:12px;
+    background:var(--accent);color:#fff;font-size:0.95rem;font-weight:700;cursor:pointer;
+    transition:opacity .15s, transform .1s;
+  }
+  .submit-btn:hover{opacity:0.92;}
+  .submit-btn:active{transform:scale(0.98);}
+  .submit-btn:disabled{opacity:0.55;cursor:default;}
+
+  .privacy-note{font-size:0.7rem;color:#9aa19b;text-align:center;margin-top:10px;}
+
+  .thankyou{display:none;text-align:center;padding:10px 0 4px;}
+  .thankyou.show{display:block;}
+  .thankyou .big-check{font-size:2.6rem;display:block;margin-bottom:6px;}
+  .thankyou h2{font-size:1.15rem;margin:0 0 6px;color:var(--accent);}
+  .thankyou p{font-size:0.86rem;color:#5c6660;margin:0 0 16px;line-height:1.5;}
+  .again-link{background:none;border:none;color:#8a9088;font-size:0.76rem;text-decoration:underline;cursor:pointer;}
+  .form-body.hide{display:none;}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="form-body" id="formBody">
+    <p class="eyebrow" id="unitTag">EDU60017</p>
+    <h1 id="questionText">How are you feeling about the unit this week?</h1>
+    <p class="sub">Totally anonymous, takes 10 seconds. Slide to where you're at.</p>
+
+    <div class="mood-display">
+      <span class="mood-emoji" id="moodEmoji">😐</span>
+      <div class="mood-label" id="moodLabel">Steady</div>
+    </div>
+    <input type="range" id="moodSlider" min="1" max="5" step="1" value="3" aria-label="Mood scale from overwhelmed to really enjoying it">
+    <div class="scale-labels"><span>Overwhelmed</span><span>Thriving</span></div>
+
+    <label class="field-label" for="noteBox" id="followUpLabel">Anything you'd like me to know? (optional)</label>
+    <textarea id="noteBox" maxlength="280" placeholder="Totally optional — leave blank if you'd rather not."></textarea>
+
+    <!-- EDIT ZONE: set REQUIRE_NAME below to true if you want an (optional) name field shown -->
+    <div class="name-row" id="nameRow" style="display:none;">
+      <span>Name (optional):</span>
+      <input type="text" id="nameBox" maxlength="60" placeholder="Leave blank to stay anonymous">
+    </div>
+
+    <button class="submit-btn" id="submitBtn">Send my check-in</button>
+    <p class="privacy-note">No names collected unless you choose to add one above.</p>
+  </div>
+
+  <div class="thankyou" id="thankyou">
+    <span class="big-check">✅</span>
+    <h2>Thanks for checking in</h2>
+    <p>Your response helps shape how the unit runs from here. I read every one.</p>
+    <button class="again-link" id="againBtn">Submit another response</button>
+  </div>
+</div>
+
+<script>
+/* ================= EDIT ZONE: config =================
+   Change these per unit/week. This is the only section you should need
+   to touch to reuse this file elsewhere. */
+const CONFIG = {
+  unitTag: 'EDU60017',
+  question: 'How are you feeling about the unit this week?',
+  followUpPrompt: "Anything you'd like me to know? (optional)",
+  requireName: false,           // true = show an optional name field
+  activityId: 'edu60017-mood-check',   // sent as the "activity" field to your Apps Script router
+  scriptUrl: 'https://script.google.com/macros/s/AKfycbxutYN2GTiMq2G1fyGKhy7TDgPEYGmzx7T1cuJbFrQvCnLqCmFW9utQtkSZ0RBKdm_imA/exec'
+};
+/* Mood scale — edit labels/emoji to suit the tone you want. Kept plain-language
+   and workplace-familiar rather than "fun" wording, since this unit skews
+   toward mature-age returning students. */
+const MOODS = {
+  1: {emoji:'😣', label:'Overwhelmed'},
+  2: {emoji:'😕', label:'A bit stretched'},
+  3: {emoji:'😐', label:'Steady'},
+  4: {emoji:'🙂', label:'Settling in well'},
+  5: {emoji:'😊', label:'Really enjoying it'}
+};
+/* ================= END EDIT ZONE ================= */
+
+document.getElementById('unitTag').textContent = CONFIG.unitTag;
+document.getElementById('questionText').textContent = CONFIG.question;
+document.getElementById('followUpLabel').textContent = CONFIG.followUpPrompt;
+if (CONFIG.requireName) document.getElementById('nameRow').style.display = 'flex';
+
+const slider = document.getElementById('moodSlider');
+const emojiEl = document.getElementById('moodEmoji');
+const labelEl = document.getElementById('moodLabel');
+
+function renderMood(){
+  const m = MOODS[slider.value];
+  emojiEl.textContent = m.emoji;
+  labelEl.textContent = m.label;
+  emojiEl.style.transform = 'scale(1.12)';
+  setTimeout(()=>{emojiEl.style.transform='scale(1)';}, 120);
+}
+slider.addEventListener('input', renderMood);
+renderMood();
+
+const submitBtn = document.getElementById('submitBtn');
+submitBtn.addEventListener('click', ()=>{
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Sending…';
+
+  const payload = {
+    activity: CONFIG.activityId,
+    mood_value: slider.value,
+    mood_label: MOODS[slider.value].label,
+    note: document.getElementById('noteBox').value.trim(),
+    name: CONFIG.requireName ? document.getElementById('nameBox').value.trim() : '',
+    timestamp: new Date().toISOString()
+  };
+
+  // fetch with mode:'no-cors' -- Apps Script Web Apps don't return a readable
+  // response this way, so we can't confirm success client-side. A short
+  // timeout before showing the thank-you screen is the established pattern.
+  fetch(CONFIG.scriptUrl, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify(payload)
+  }).catch(()=>{ /* no-cors means we can't see errors either -- fail silently */ });
+
+  setTimeout(()=>{
+    document.getElementById('formBody').classList.add('hide');
+    document.getElementById('thankyou').classList.add('show');
+  }, 500);
+});
+
+document.getElementById('againBtn').addEventListener('click', ()=>{
+  document.getElementById('thankyou').classList.remove('show');
+  document.getElementById('formBody').classList.remove('hide');
+  submitBtn.disabled = false;
+  submitBtn.textContent = 'Send my check-in';
+  slider.value = 3;
+  renderMood();
+  document.getElementById('noteBox').value = '';
+  if (CONFIG.requireName) document.getElementById('nameBox').value = '';
+});
+</script>
+</body>
+</html>

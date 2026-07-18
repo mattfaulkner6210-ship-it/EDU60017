@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>EDU60017_WordCloud</title>
+<style>
+  /* ================= EDIT ZONE: palette & type ================= */
+  :root{
+    --ink:#242b28;
+    --paper:#faf8f4;
+    --card:#ffffff;
+    --accent:#3b6e63;
+    --accent-soft:#e4efe9;
+    --border:#dcd6c9;
+    --shadow:0 4px 18px rgba(40,40,30,0.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;min-height:100vh;
+    display:flex;align-items:flex-start;justify-content:center;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--paper);color:var(--ink);padding:24px 14px;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .wrap{width:100%;max-width:640px;}
+  .card{background:var(--card);border-radius:18px;box-shadow:var(--shadow);border:1px solid var(--border);padding:28px 26px 24px;}
+  .eyebrow{font-size:0.74rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:0 0 6px;}
+  h1{font-size:1.25rem;line-height:1.35;margin:0 0 6px;font-weight:600;}
+  .sub{font-size:0.86rem;color:#5c6660;margin:0 0 22px;line-height:1.5;}
+
+  .submit-row{display:flex;gap:10px;margin-bottom:6px;}
+  .submit-row input[type=text]{
+    flex:1;border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;
+    font-size:0.95rem;font-family:inherit;background:#fdfcf9;color:var(--ink);
+  }
+  .submit-row input[type=text]:focus{outline:2px solid var(--accent);outline-offset:1px;}
+  .submit-row button{
+    border:none;border-radius:10px;background:var(--accent);color:#fff;font-weight:700;
+    padding:0 22px;font-size:0.9rem;cursor:pointer;white-space:nowrap;
+  }
+  .submit-row button:hover{opacity:0.92;}
+  .submit-row button:disabled{opacity:0.55;cursor:default;}
+  .hint{font-size:0.7rem;color:#9aa19b;margin:0 0 22px;}
+
+  .cloud-shell{
+    position:relative;min-height:220px;border-radius:14px;background:var(--accent-soft);
+    border:1px solid var(--border);padding:22px;display:flex;flex-wrap:wrap;
+    align-items:center;justify-content:center;gap:10px 16px;
+  }
+  .cloud-word{
+    font-weight:700;color:var(--accent);line-height:1;transition:opacity .3s, transform .3s;
+    opacity:0;transform:translateY(6px) scale(0.9);
+  }
+  .cloud-word.in{opacity:1;transform:translateY(0) scale(1);}
+  /* size tiers set inline via JS font-size, colour intensity via CSS var below */
+
+  .gate{
+    position:absolute;inset:0;border-radius:14px;
+    background:rgba(250,248,244,0.88);backdrop-filter:blur(3px);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:20px;
+  }
+  .gate p{font-size:0.86rem;color:#5c6660;max-width:280px;margin:8px 0 0;line-height:1.5;}
+  .gate .lock{font-size:1.8rem;}
+  .gate.hide{display:none;}
+
+  .empty-note{font-size:0.82rem;color:#7d867f;text-align:center;}
+  .refresh-note{font-size:0.7rem;color:#9aa19b;text-align:center;margin-top:10px;}
+  .sync-warning{
+    display:none;font-size:0.72rem;color:#8a5a2a;background:#fbeedd;border:1px solid #eccfa0;
+    border-radius:8px;padding:8px 10px;margin-top:12px;line-height:1.5;
+  }
+  .sync-warning.show{display:block;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <p class="eyebrow" id="unitTag">EDU60017</p>
+    <h1 id="questionText">One word for how you're feeling about the unit right now</h1>
+    <p class="sub">Add your word, then watch it join everyone else's below.</p>
+
+    <div class="submit-row">
+      <input type="text" id="wordInput" maxlength="24" placeholder="e.g. curious, tired, hopeful…" aria-label="Your one word">
+      <button id="submitBtn">Add my word</button>
+    </div>
+    <p class="hint">One word only — first entry per visit is used.</p>
+
+    <div class="cloud-shell" id="cloudShell">
+      <div class="gate" id="gate">
+        <span class="lock">🔒</span>
+        <p>Add your word above to reveal what the class is feeling.</p>
+      </div>
+      <p class="empty-note" id="emptyNote" style="display:none;">No words yet — be the first!</p>
+    </div>
+    <p class="refresh-note" id="refreshNote"></p>
+    <p class="sync-warning" id="syncWarning">
+      Live sync isn't connected yet, so this is showing your own word only. See the comment
+      at the top of this file's script for the one Apps Script function Matt needs to add
+      to make everyone's words appear here.
+    </p>
+  </div>
+</div>
+
+<script>
+/* ================= EDIT ZONE: config ================= */
+const CONFIG = {
+  unitTag: 'EDU60017',
+  question: "One word for how you're feeling about the unit right now",
+  activityId: 'edu60017-word-cloud',   // used both as the Sheet tab/routing key AND the doGet lookup key
+  scriptUrl: 'https://script.google.com/macros/s/AKfycbxutYN2GTiMq2G1fyGKhy7TDgPEYGmzx7T1cuJbFrQvCnLqCmFW9utQtkSZ0RBKdm_imA/exec',
+  gateBehindSubmission: true  // true = students must add a word before seeing the cloud (tends to lift participation)
+};
+/*
+  LIVE SYNC NOTE FOR MATT:
+  Your existing Apps Script Web App already handles doPost (this file POSTs to it
+  exactly like your other activities). To make the cloud show everyone's words
+  (not just the current student's), add a doGet function that reads back and
+  tallies words for a given activity, e.g.:
+
+    function doGet(e) {
+      var activity = e.parameter.activity;
+      var ss = SpreadsheetApp.openById('1_8TcFHDJe6lVOUn9z0p2iE_ruibBZhwuxcm85ruakqc');
+      var sheet = ss.getSheetByName(activity);
+      if (!sheet) return ContentService.createTextOutput('{}').setMimeType(ContentService.MimeType.JSON);
+      var data = sheet.getDataRange().getValues();
+      var header = data[0];
+      var wordCol = header.indexOf('word');
+      var counts = {};
+      for (var i = 1; i < data.length; i++) {
+        var w = (data[i][wordCol] || '').toString().trim().toLowerCase();
+        if (!w) continue;
+        counts[w] = (counts[w] || 0) + 1;
+      }
+      return ContentService.createTextOutput(JSON.stringify(counts)).setMimeType(ContentService.MimeType.JSON);
+    }
+
+  Then redeploy (Deploy → Manage deployments → pencil → New version) -- same as
+  always, saving alone won't update the live endpoint. Until that's done, this
+  page gracefully falls back to showing just the current student's own word,
+  with the amber notice below the cloud.
+*/
+/* ================= END EDIT ZONE ================= */
+
+document.getElementById('unitTag').textContent = CONFIG.unitTag;
+document.getElementById('questionText').textContent = CONFIG.question;
+
+const input = document.getElementById('wordInput');
+const submitBtn = document.getElementById('submitBtn');
+const gate = document.getElementById('gate');
+const shell = document.getElementById('cloudShell');
+const emptyNote = document.getElementById('emptyNote');
+const syncWarning = document.getElementById('syncWarning');
+const refreshNote = document.getElementById('refreshNote');
+
+if (!CONFIG.gateBehindSubmission) gate.classList.add('hide');
+
+let hasSubmitted = false;
+let localWords = []; // fallback store for this browser session only (no localStorage per Canvas iframe rules)
+
+function cleanWord(raw){
+  return raw.trim().toLowerCase().replace(/[^a-z0-9'\-]/gi,'').slice(0,24);
+}
+
+function renderCloud(counts){
+  // clear existing word elements (keep gate/emptyNote nodes)
+  shell.querySelectorAll('.cloud-word').forEach(el=>el.remove());
+  const entries = Object.entries(counts);
+  if (entries.length === 0){
+    emptyNote.style.display = 'block';
+    return;
+  }
+  emptyNote.style.display = 'none';
+  const max = Math.max(...entries.map(e=>e[1]));
+  const min = Math.min(...entries.map(e=>e[1]));
+  entries
+    .sort((a,b)=>b[1]-a[1])
+    .forEach(([word,count],i)=>{
+      const span = document.createElement('span');
+      span.className = 'cloud-word';
+      const ratio = max===min ? 1 : (count-min)/(max-min);
+      const fontSize = 15 + ratio*34; // 15px .. 49px
+      const opacity = 0.55 + ratio*0.45;
+      span.style.fontSize = fontSize+'px';
+      span.style.opacity = 0; // will fade in
+      span.style.color = `rgba(59,110,99,${opacity.toFixed(2)})`;
+      span.textContent = word;
+      shell.appendChild(span);
+      setTimeout(()=>{ span.classList.add('in'); span.style.opacity=''; }, 30*i + 40);
+    });
+}
+
+async function fetchAggregate(){
+  try{
+    const res = await fetch(CONFIG.scriptUrl + '?activity=' + encodeURIComponent(CONFIG.activityId), {method:'GET'});
+    if(!res.ok) throw new Error('bad response');
+    const data = await res.json();
+    if (data && typeof data === 'object' && Object.keys(data).length){
+      syncWarning.classList.remove('show');
+      renderCloud(data);
+      return true;
+    }
+    return false;
+  } catch(err){
+    return false;
+  }
+}
+
+function renderLocalFallback(){
+  const counts = {};
+  localWords.forEach(w=>{ counts[w] = (counts[w]||0)+1; });
+  syncWarning.classList.add('show');
+  renderCloud(counts);
+}
+
+function submitWord(){
+  const word = cleanWord(input.value);
+  if(!word){ input.focus(); return; }
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Adding…';
+
+  const payload = {
+    activity: CONFIG.activityId,
+    word: word,
+    timestamp: new Date().toISOString()
+  };
+  fetch(CONFIG.scriptUrl, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify(payload)
+  }).catch(()=>{ /* no-cors: can't inspect errors */ });
+
+  localWords.push(word);
+  hasSubmitted = true;
+  gate.classList.add('hide');
+  input.value = '';
+  input.disabled = true;
+  submitBtn.textContent = 'Added ✓';
+
+  // give the sheet a moment to receive the row, then try to pull the live aggregate;
+  // fall back to a local-only cloud if doGet isn't wired up yet
+  setTimeout(async ()=>{
+    const synced = await fetchAggregate();
+    if(!synced) renderLocalFallback();
+    refreshNote.textContent = 'Tap "Add my word" is now done — refresh the page to see updated totals.';
+  }, 900);
+}
+
+submitBtn.addEventListener('click', submitWord);
+input.addEventListener('keydown', (e)=>{ if(e.key==='Enter') submitWord(); });
+
+// On load: if not gating, try to show the live cloud straight away (read-only peek)
+if (!CONFIG.gateBehindSubmission){
+  fetchAggregate().then(synced=>{ if(!synced){ emptyNote.style.display='block'; } });
+} else {
+  emptyNote.style.display = 'none';
+}
+</script>
+</body>
+</html>
